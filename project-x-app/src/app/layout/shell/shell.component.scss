@@ -1,14 +1,22 @@
 .shell-container {
   height: 100vh;
+  background: #f4f6f8;
 }
 
 .shell-sidenav {
-  width: 260px;
-  border-right: 1px solid var(--mat-sys-outline-variant);
+  width: 272px;
+  background: #123b63;
+  border-right: 0;
 }
 
 .shell-main {
-  padding: 1.5rem;
-  max-width: 1400px;
+  padding: clamp(1.25rem, 3vw, 2.75rem);
+  max-width: 1480px;
   margin: 0 auto;
+}
+
+@media (max-width: 599px) {
+  .shell-main {
+    padding: 1rem;
+  }
 }

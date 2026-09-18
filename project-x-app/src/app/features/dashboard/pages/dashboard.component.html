@@ -1,13 +1,48 @@
-<h1>Welcome back{{ displayName() ? ', ' + displayName() : '' }}</h1>
-<p class="dashboard-role">Role: {{ role() ?? 'unknown' }}</p>
+<section class="dashboard-intro">
+  <div>
+    <p class="section-label">Operations overview</p>
+    <h1>Welcome back{{ displayName() ? ', ' + displayName() : '' }}</h1>
+    <p class="dashboard-role">Your current workspace is set to <strong>{{ role() ?? 'unknown' }}</strong>.</p>
+  </div>
+  <div class="data-status" role="status">
+    <span class="status-dot" aria-hidden="true"></span>
+    <span>Dashboard data pending connection</span>
+  </div>
+</section>
 
-<div class="kpi-grid">
+<section class="overview-strip" aria-label="Dashboard status">
+  <div>
+    <span class="strip-label">Reporting period</span>
+    <strong>Current workspace</strong>
+  </div>
+  <div>
+    <span class="strip-label">Access level</span>
+    <strong>{{ role() ?? 'Unknown' }}</strong>
+  </div>
+  <div>
+    <span class="strip-label">Next step</span>
+    <strong>Review assigned work</strong>
+  </div>
+</section>
+
+<section class="metrics-section" aria-labelledby="metrics-heading">
+  <div class="section-heading">
+    <div>
+      <p class="section-label">At a glance</p>
+      <h2 id="metrics-heading">Workload indicators</h2>
+    </div>
+    <span class="section-note">Values will appear when data services are connected.</span>
+  </div>
+
+  <div class="kpi-grid">
   @for (card of kpiCards(); track card) {
     <mat-card appearance="outlined" class="kpi-card">
       <mat-card-content>
         <span class="kpi-label">{{ card }}</span>
-        <span class="kpi-value">—</span>
+        <span class="kpi-value" aria-label="Pending">--</span>
+        <span class="kpi-state">Awaiting data</span>
       </mat-card-content>
     </mat-card>
   }
-</div>
+  </div>
+</section>

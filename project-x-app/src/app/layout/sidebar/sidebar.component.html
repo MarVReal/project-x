@@ -1,3 +1,12 @@
+<div class="sidebar-brand">
+  <div class="brand-mark" aria-hidden="true">PX</div>
+  <div>
+    <strong>Project X</strong>
+    <span>Service operations</span>
+  </div>
+</div>
+
+<div class="sidebar-section-label">Workspace</div>
 <mat-nav-list>
   @for (item of navItems(); track item.route) {
     <a mat-list-item [routerLink]="item.route" routerLinkActive="active-link">

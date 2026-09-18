@@ -3,10 +3,31 @@
   top: 0;
   z-index: 10;
   display: flex;
+  min-height: 72px;
+  padding: 0 clamp(1rem, 3vw, 2.75rem);
+  background: #fff;
+  border-bottom: 1px solid #d5dde5;
+  color: #17212b;
+}
+
+.app-title-group {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
 }
 
 .app-title {
-  font-weight: 600;
+  color: #123b63;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.app-context {
+  color: #637487;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .spacer {
@@ -15,6 +36,7 @@
 
 .menu-toggle {
   display: none;
+  margin-right: 0.5rem;
 }
 
 @media (max-width: 959px) {
@@ -33,6 +55,6 @@
   .menu-role {
     font-size: 0.75rem;
     text-transform: capitalize;
-    color: var(--mat-sys-outline);
+    color: #637487;
   }
 }

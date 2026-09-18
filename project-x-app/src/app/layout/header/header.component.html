@@ -2,7 +2,10 @@
   <button mat-icon-button class="menu-toggle" (click)="menuToggle.emit()" aria-label="Toggle navigation">
     <mat-icon>menu</mat-icon>
   </button>
-  <span class="app-title">Task Management</span>
+  <div class="app-title-group">
+    <span class="app-title">Task Management</span>
+    <span class="app-context">Operations workspace</span>
+  </div>
   <span class="spacer"></span>
   <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="Account menu">
     <mat-icon>account_circle</mat-icon>
@@ -10,7 +13,7 @@
   <mat-menu #userMenu="matMenu">
     <div class="menu-header">
       <div class="menu-name">{{ displayName() }}</div>
-      <div class="menu-role">{{ profile()?.role }}</div>
+      <div class="menu-role">{{ profile()?.role || 'Account' }}</div>
     </div>
     <button mat-menu-item routerLink="/profile">
       <mat-icon>person</mat-icon>
