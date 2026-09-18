@@ -54,6 +54,12 @@ mat-nav-list a {
   border-radius: 4px;
   color: #d9e4ee;
 
+  ::ng-deep .mdc-list-item__primary-text {
+    color: #d9e4ee;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
   mat-icon {
     color: #9fb5ca;
   }
@@ -64,6 +70,10 @@ mat-nav-list a {
   color: #fff !important;
 
   mat-icon {
+    color: #fff;
+  }
+
+  ::ng-deep .mdc-list-item__primary-text {
     color: #fff;
   }
 }

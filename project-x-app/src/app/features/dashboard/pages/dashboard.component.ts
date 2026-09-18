@@ -1,5 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { PermissionService } from '../../../core/services/permission.service';
 
@@ -7,7 +9,7 @@ import { PermissionService } from '../../../core/services/permission.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule, MatIconModule, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -17,6 +19,12 @@ export class DashboardComponent {
 
   readonly displayName = computed(() => this.auth.profile()?.full_name || this.auth.currentUser()?.email);
   readonly role = this.permissions.role;
+
+  readonly quickLinks = [
+    { label: 'Open task queue', detail: 'Review assigned work', icon: 'checklist', route: '/tasks' },
+    { label: 'View pipelines', detail: 'Track active workflows', icon: 'account_tree', route: '/pipelines' },
+    { label: 'Manage teams', detail: 'See your working groups', icon: 'groups', route: '/teams' },
+  ];
 
   readonly kpiCards = computed(() => {
     if (this.permissions.isAdmin()) {

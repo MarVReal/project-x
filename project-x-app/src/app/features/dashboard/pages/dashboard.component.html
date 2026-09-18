@@ -1,12 +1,19 @@
-<section class="dashboard-intro">
-  <div>
+<section class="dashboard-hero">
+  <div class="hero-copy">
     <p class="section-label">Operations overview</p>
-    <h1>Welcome back{{ displayName() ? ', ' + displayName() : '' }}</h1>
+    <h1>Welcome back<span class="hero-name">{{ displayName() ? ', ' + displayName() : '' }}</span></h1>
     <p class="dashboard-role">Your current workspace is set to <strong>{{ role() ?? 'unknown' }}</strong>.</p>
   </div>
-  <div class="data-status" role="status">
-    <span class="status-dot" aria-hidden="true"></span>
-    <span>Dashboard data pending connection</span>
+  <div class="hero-meta">
+    <div class="hero-mark" aria-hidden="true"><mat-icon>shield</mat-icon></div>
+    <div>
+      <span class="hero-meta-label">Workspace status</span>
+      <strong>Ready for review</strong>
+    </div>
+    <div class="data-status" role="status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>Data connection pending</span>
+    </div>
   </div>
 </section>
 
@@ -25,7 +32,8 @@
   </div>
 </section>
 
-<section class="metrics-section" aria-labelledby="metrics-heading">
+<div class="dashboard-layout">
+  <section class="metrics-section" aria-labelledby="metrics-heading">
   <div class="section-heading">
     <div>
       <p class="section-label">At a glance</p>
@@ -34,15 +42,33 @@
     <span class="section-note">Values will appear when data services are connected.</span>
   </div>
 
-  <div class="kpi-grid">
-  @for (card of kpiCards(); track card) {
-    <mat-card appearance="outlined" class="kpi-card">
-      <mat-card-content>
-        <span class="kpi-label">{{ card }}</span>
-        <span class="kpi-value" aria-label="Pending">--</span>
-        <span class="kpi-state">Awaiting data</span>
-      </mat-card-content>
-    </mat-card>
-  }
-  </div>
-</section>
+    <div class="kpi-grid">
+    @for (card of kpiCards(); track card) {
+      <mat-card appearance="outlined" class="kpi-card">
+        <mat-card-content>
+          <span class="kpi-label">{{ card }}</span>
+          <span class="kpi-value" aria-label="Pending">--</span>
+          <span class="kpi-state">Awaiting data</span>
+        </mat-card-content>
+      </mat-card>
+    }
+    </div>
+  </section>
+
+  <aside class="quick-links" aria-labelledby="quick-links-heading">
+    <div class="quick-links-heading">
+      <p class="section-label">Move quickly</p>
+      <h2 id="quick-links-heading">Quick access</h2>
+    </div>
+    @for (link of quickLinks; track link.route) {
+      <a class="quick-link" [routerLink]="link.route">
+        <span class="quick-link-icon"><mat-icon>{{ link.icon }}</mat-icon></span>
+        <span class="quick-link-copy">
+          <strong>{{ link.label }}</strong>
+          <span>{{ link.detail }}</span>
+        </span>
+        <mat-icon class="quick-link-arrow" aria-hidden="true">arrow_forward</mat-icon>
+      </a>
+    }
+  </aside>
+</div>
