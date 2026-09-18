@@ -42,42 +42,25 @@ export const routes: Routes = [
       },
       {
         path: 'tasks',
-        component: FeaturePlaceholderComponent,
-        data: {
-          title: 'Tasks',
-          description: 'Task lists, boards, and calendar views arrive in Phase 5–8.',
-          icon: 'checklist',
-        },
+        loadComponent: () => import('./features/tasks/pages/tasks.component').then((m) => m.TasksComponent),
       },
       {
         path: 'pipelines',
-        component: FeaturePlaceholderComponent,
-        data: {
-          title: 'Pipelines',
-          description: 'Pipeline and stage management arrives in Phase 4.',
-          icon: 'account_tree',
-        },
+        loadComponent: () => import('./features/pipelines/pages/pipelines.component').then((m) => m.PipelinesComponent),
       },
       {
         path: 'teams',
-        component: FeaturePlaceholderComponent,
-        data: { title: 'Teams', description: 'Team/section management arrives in Phase 3.', icon: 'groups' },
+        loadComponent: () => import('./features/teams/pages/teams.component').then((m) => m.TeamsComponent),
       },
       {
         path: 'users',
         canActivate: [roleGuard(['admin'])],
-        component: FeaturePlaceholderComponent,
-        data: {
-          title: 'Users',
-          description: 'Admin user management and invitations arrive in Phase 3.',
-          icon: 'manage_accounts',
-        },
+        loadComponent: () => import('./features/users/pages/users.component').then((m) => m.UsersComponent),
       },
       {
         path: 'tags',
         canActivate: [roleGuard(['admin'])],
-        component: FeaturePlaceholderComponent,
-        data: { title: 'Tags', description: 'Organization tag management arrives in Phase 3–5.', icon: 'sell' },
+        loadComponent: () => import('./features/tags/pages/tags.component').then((m) => m.TagsComponent),
       },
       {
         path: 'notifications',

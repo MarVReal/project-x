@@ -1,0 +1,10 @@
+.page-header { margin-bottom: 1.5rem; }
+.eyebrow { color: var(--mat-sys-primary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.editor-card { margin-bottom: 1.5rem; }
+.tag-form { align-items: start; display: grid; gap: 1rem; grid-template-columns: 1fr 7rem 1.5fr auto; padding-top: 1rem; }
+.tag-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.tag-heading { align-items: center; display: flex; gap: .6rem; }
+.tag-heading h2 { font-size: 1.1rem; margin: 0; }
+.swatch { border-radius: 50%; display: inline-block; height: 1rem; width: 1rem; }
+.error { color: var(--mat-sys-error); }
+@media (max-width: 760px) { .tag-form { grid-template-columns: 1fr; } }

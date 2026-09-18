@@ -81,9 +81,18 @@ bootstrap your first organization + admin manually:
 --------------------------------------------------------------------
 Supabase Dashboard > Authentication > URL Configuration:
   - Site URL: your production URL (e.g. https://your-app.vercel.app)
+    (use http://localhost:4200 for now if you're only testing locally)
   - Redirect URLs, add both:
       http://localhost:4200/reset-password
       https://your-app.vercel.app/reset-password
+
+  Symptom if this is misconfigured: clicking a password-reset email link lands
+  on a bare URL like http://localhost:3000/#access_token=...&type=recovery
+  instead of your app's /reset-password page. That means Supabase rejected the
+  redirectTo we sent (it wasn't in the allow-list above) and fell back to the
+  Site URL. Fix the settings above, then request a NEW reset email — the old
+  link's tokens should be treated as compromised once exposed anywhere
+  (chat, screenshots, logs, etc.), since they're valid for 1 hour.
 
 --------------------------------------------------------------------
 6) SET LOCAL ENVIRONMENT VARIABLES

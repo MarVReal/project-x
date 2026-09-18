@@ -1,0 +1,10 @@
+.page-header { margin-bottom: 1.5rem; }
+.eyebrow { color: var(--mat-sys-primary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.editor-card { margin-bottom: 1.5rem; }
+.team-form { display: grid; gap: 1rem; grid-template-columns: minmax(12rem, 1fr) minmax(16rem, 2fr) auto; align-items: start; padding-top: 1rem; }
+.team-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.team-title { align-items: center; display: flex; gap: .6rem; }
+.team-title h2 { font-size: 1.1rem; margin: 0; }
+.team-card p { color: var(--mat-sys-on-surface-variant); min-height: 2.5rem; }
+.error { color: var(--mat-sys-error); }
+@media (max-width: 760px) { .team-form { grid-template-columns: 1fr; } }

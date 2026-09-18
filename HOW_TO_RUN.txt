@@ -115,12 +115,16 @@ Working today:
     notifications
   - Supabase Storage bucket ("task-attachments") + policies
 
-NOT built yet (sidebar links show a "coming soon" placeholder):
-  - Tasks (list/board/calendar views)           -> Phase 5-8
-  - Pipelines & stage management UI              -> Phase 4
-  - Teams management UI                          -> Phase 3
-  - Users / invitations UI                        -> Phase 3
-  - Tags management UI                            -> Phase 3-5
+Working feature pages now:
+  - Teams: admin team creation and archiving; all members can view active teams
+  - Users: admin organization membership list with role/status management
+  - Pipelines: pipeline creation/archiving and stage overview
+  - Tags: admin tag creation and archiving
+  - Tasks: task creation, list view, priority, due date, and stage filtering
+
+The following are not built yet (sidebar links still show a "coming soon" placeholder):
+  - Tasks board and calendar views               -> Phase 6-8
+  - User invitations                             -> Phase 3 backend work
   - Notifications UI                              -> Phase 10
   - Organization settings UI                      -> later phase
   - Reports                                       -> Phase 11
@@ -133,8 +137,10 @@ NOT built yet (sidebar links show a "coming soon" placeholder):
   /reset-password     Set a new password (opened from the email link)
   /dashboard          Role-aware dashboard (default landing page)
   /profile            View/edit your own profile
-  /tasks, /pipelines, /teams, /users, /tags, /notifications, /settings
-                      Placeholder pages (Users/Tags/Settings are admin-only)
+  /tasks, /notifications, /settings
+                      Placeholder pages
+  /pipelines, /teams, /users, /tags
+                      Working pages (Users/Tags/Settings are admin-only where applicable)
 
 --------------------------------------------------------------------
 7) THINGS TO KEEP IN MIND

@@ -1,0 +1,14 @@
+.page-header { margin-bottom: 1.5rem; }
+.eyebrow { color: var(--mat-sys-primary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.editor-card { margin-bottom: 1.5rem; }
+.task-form { align-items: start; display: grid; gap: 1rem; grid-template-columns: 1.5fr 1fr 1fr .8fr 10rem; padding-top: 1rem; }
+.description { grid-column: span 3; }
+.filter { max-width: 18rem; }
+.task-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+.task-heading { align-items: start; display: flex; gap: .75rem; justify-content: space-between; }
+.task-heading h2 { font-size: 1.1rem; margin: 0; }
+.priority { color: var(--mat-sys-primary); font-size: .75rem; text-transform: uppercase; }
+.task-meta { color: var(--mat-sys-on-surface-variant); display: flex; flex-wrap: wrap; font-size: .8rem; gap: .75rem; }
+.error { color: var(--mat-sys-error); }
+@media (max-width: 900px) { .task-form { grid-template-columns: 1fr 1fr; } .description { grid-column: span 2; } }
+@media (max-width: 560px) { .task-form { grid-template-columns: 1fr; } .description { grid-column: auto; } }

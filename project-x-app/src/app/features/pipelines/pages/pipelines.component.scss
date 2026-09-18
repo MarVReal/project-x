@@ -1,0 +1,12 @@
+.page-header { margin-bottom: 1.5rem; }
+.eyebrow { color: var(--mat-sys-primary); font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.editor-card { margin-bottom: 1.5rem; }
+.pipeline-form { align-items: start; display: grid; gap: 1rem; grid-template-columns: 1fr 1.5fr 7rem auto; padding-top: 1rem; }
+.pipeline-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+.pipeline-heading { align-items: center; display: flex; gap: .6rem; }
+.pipeline-heading h2 { font-size: 1.1rem; margin: 0; }
+.swatch, .stage-dot { border-radius: 50%; display: inline-block; flex: 0 0 auto; height: 1rem; width: 1rem; }
+li { align-items: center; display: flex; gap: .5rem; margin: .5rem 0; }
+.completed { color: var(--mat-sys-primary); font-size: .75rem; margin-left: auto; }
+.error { color: var(--mat-sys-error); }
+@media (max-width: 760px) { .pipeline-form { grid-template-columns: 1fr; } }
