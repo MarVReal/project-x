@@ -16,11 +16,12 @@ Everything below requires YOUR credentials/accounts, so I could not do it.
 --------------------------------------------------------------------
 2) RUN THE DATABASE MIGRATIONS
 --------------------------------------------------------------------
-Files are in: supabase/migrations/001_initial_schema.sql ... 010_storage.sql
+Files are in: supabase/migrations/001_initial_schema.sql ... 011_security_hardening.sql
 
 Option A (no CLI needed):
   - Open Supabase Dashboard > SQL Editor.
-  - Paste and run each file IN NUMERIC ORDER (001 first, 010 last).
+  - Paste and run each file IN NUMERIC ORDER (001 first, 011 last).
+  - All files are safe to re-run (idempotent) if you need to paste one again.
 
 Option B (Supabase CLI):
   - npm install -g supabase
@@ -32,6 +33,14 @@ pipeline_stages, tasks, tags, task_tags, task_comments, task_links,
 task_attachments, task_activity, notifications — plus RLS policies, helper
 functions (is_admin, is_section_head, can_access_task, etc.), and the
 "task-attachments" Storage bucket + policies.
+
+If you already ran 001-010 once and only need the newest file: just run
+011_security_hardening.sql — it moves the pg_trgm extension out of the public
+schema, locks down who can call the helper functions, and fixes the two
+Supabase linter warnings about search_path/permissive policies.
+
+Also recommended (Supabase Dashboard, not SQL): Authentication > Attack
+Protection > enable "Leaked Password Protection". This can't be set via SQL.
 
 --------------------------------------------------------------------
 3) (OPTIONAL, LOCAL DEV ONLY) LOAD DEMO DATA

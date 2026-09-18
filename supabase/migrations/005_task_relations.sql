@@ -16,6 +16,7 @@ create table if not exists public.task_comments (
 create index if not exists idx_comments_task_id on public.task_comments (task_id);
 create index if not exists idx_comments_organization_id on public.task_comments (organization_id);
 
+drop trigger if exists trg_comments_updated_at on public.task_comments;
 create trigger trg_comments_updated_at
   before update on public.task_comments
   for each row execute function public.set_updated_at();

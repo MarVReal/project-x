@@ -2,12 +2,17 @@
 -- Extensions, shared trigger helpers, organizations, profiles, organization_members, teams.
 
 create extension if not exists pgcrypto;
-create extension if not exists pg_trgm;
+
+-- Installed into its own schema (not public) per Supabase security guidance; see
+-- 011_security_hardening.sql for the follow-up fix on projects where this already ran differently.
+create schema if not exists extensions;
+create extension if not exists pg_trgm with schema extensions;
 
 -- Generic "touch updated_at" trigger reused by every table below.
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
+security invoker set search_path = public
 as $$
 begin
   new.updated_at = now();
@@ -25,6 +30,7 @@ create table if not exists public.organizations (
   constraint organizations_name_length check (char_length(name) between 1 and 200)
 );
 
+drop trigger if exists trg_organizations_updated_at on public.organizations;
 create trigger trg_organizations_updated_at
   before update on public.organizations
   for each row execute function public.set_updated_at();
@@ -40,6 +46,7 @@ create table if not exists public.profiles (
   updated_at timestamptz not null default now()
 );
 
+drop trigger if exists trg_profiles_updated_at on public.profiles;
 create trigger trg_profiles_updated_at
   before update on public.profiles
   for each row execute function public.set_updated_at();
@@ -83,6 +90,7 @@ create table if not exists public.teams (
 
 create index if not exists idx_teams_organization_id on public.teams (organization_id);
 
+drop trigger if exists trg_teams_updated_at on public.teams;
 create trigger trg_teams_updated_at
   before update on public.teams
   for each row execute function public.set_updated_at();
@@ -108,6 +116,7 @@ create index if not exists idx_org_members_organization_id on public.organizatio
 create index if not exists idx_org_members_user_id on public.organization_members (user_id);
 create index if not exists idx_org_members_team_id on public.organization_members (team_id);
 
+drop trigger if exists trg_org_members_updated_at on public.organization_members;
 create trigger trg_org_members_updated_at
   before update on public.organization_members
   for each row execute function public.set_updated_at();

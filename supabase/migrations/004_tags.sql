@@ -17,6 +17,7 @@ create table if not exists public.tags (
 
 create index if not exists idx_tags_organization_id on public.tags (organization_id);
 
+drop trigger if exists trg_tags_updated_at on public.tags;
 create trigger trg_tags_updated_at
   before update on public.tags
   for each row execute function public.set_updated_at();

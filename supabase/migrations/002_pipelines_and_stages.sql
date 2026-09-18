@@ -18,6 +18,7 @@ create table if not exists public.pipelines (
 
 create index if not exists idx_pipelines_organization_id on public.pipelines (organization_id);
 
+drop trigger if exists trg_pipelines_updated_at on public.pipelines;
 create trigger trg_pipelines_updated_at
   before update on public.pipelines
   for each row execute function public.set_updated_at();
@@ -41,6 +42,7 @@ create table if not exists public.pipeline_stages (
 create index if not exists idx_stages_organization_id on public.pipeline_stages (organization_id);
 create index if not exists idx_stages_pipeline_id on public.pipeline_stages (pipeline_id);
 
+drop trigger if exists trg_stages_updated_at on public.pipeline_stages;
 create trigger trg_stages_updated_at
   before update on public.pipeline_stages
   for each row execute function public.set_updated_at();

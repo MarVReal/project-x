@@ -29,10 +29,13 @@ create index if not exists idx_tasks_assigned_to on public.tasks (assigned_to);
 create index if not exists idx_tasks_team_id on public.tasks (team_id);
 create index if not exists idx_tasks_due_date on public.tasks (due_date);
 create index if not exists idx_tasks_created_at on public.tasks (created_at);
--- Trigram index to support fast ILIKE search on title/description.
+-- Trigram index to support fast ILIKE search on title/description. Uses whichever schema pg_trgm
+-- is installed in at the time this runs (011_security_hardening.sql may relocate the extension
+-- afterwards — that does not affect already-built indexes).
 create index if not exists idx_tasks_title_trgm on public.tasks using gin (title gin_trgm_ops);
 create index if not exists idx_tasks_description_trgm on public.tasks using gin (description gin_trgm_ops);
 
+drop trigger if exists trg_tasks_updated_at on public.tasks;
 create trigger trg_tasks_updated_at
   before update on public.tasks
   for each row execute function public.set_updated_at();

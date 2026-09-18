@@ -45,3 +45,7 @@ Thumbs.db
 
 # Local environment variables (see .env.example)
 .env
+
+# Generated at build/serve time by scripts/set-env.mjs — see .env.example
+/src/environments/environment.ts
+/src/environments/environment.development.ts
