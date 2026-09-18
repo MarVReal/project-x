@@ -1,0 +1,38 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+}
+
+.app-title {
+  font-weight: 600;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+@media (max-width: 959px) {
+  .menu-toggle {
+    display: inline-flex;
+  }
+}
+
+.menu-header {
+  padding: 0.5rem 1rem;
+
+  .menu-name {
+    font-weight: 600;
+  }
+
+  .menu-role {
+    font-size: 0.75rem;
+    text-transform: capitalize;
+    color: var(--mat-sys-outline);
+  }
+}

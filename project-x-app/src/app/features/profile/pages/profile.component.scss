@@ -1,0 +1,25 @@
+.profile-card {
+  max-width: 480px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.profile-meta {
+  margin-bottom: 0.5rem;
+}
+
+.profile-success {
+  color: var(--mat-sys-primary);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.profile-error {
+  color: var(--mat-sys-error);
+  font-size: 0.875rem;
+  margin: 0;
+}

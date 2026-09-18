@@ -1,0 +1,21 @@
+@if (isConfigured) {
+  <router-outlet />
+} @else {
+  <div class="config-warning">
+    <div class="config-warning-card">
+      <h1>Supabase configuration required</h1>
+      <p>
+        <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> are not set, so the app cannot
+        connect to your database yet.
+      </p>
+      <ol>
+        <li>Create a Supabase project (see <code>NEXT_STEPS.txt</code> at the repo root).</li>
+        <li>
+          Copy <code>project-x-app/.env.example</code> to <code>project-x-app/.env</code> and fill in
+          your project's URL and anon key.
+        </li>
+        <li>Restart the dev server (<code>npm run start</code>) so the values are picked up.</li>
+      </ol>
+    </div>
+  </div>
+}

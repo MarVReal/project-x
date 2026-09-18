@@ -1,0 +1,150 @@
+TASK MANAGEMENT SYSTEM — HOW TO RUN & USER MANUAL
+===================================================
+Repo root: dev/project-x
+  project-x-api  -> backend (Express + Supabase service-role client)
+  project-x-app  -> frontend (Angular 21 + Angular Material + Supabase JS)
+
+Before you start: the app will not fully work until you've completed the
+Supabase setup steps in NEXT_STEPS.txt (create project, run migrations,
+fill in .env files). This file assumes that is already done.
+
+--------------------------------------------------------------------
+1) HOW TO START THE BACKEND (project-x-api)
+--------------------------------------------------------------------
+  cd project-x-api
+  npm install                (first time only)
+  copy .env.example to .env and fill in:
+      PORT=3000
+      CORS_ORIGIN=http://localhost:4200
+      SUPABASE_URL=...
+      SUPABASE_ANON_KEY=...
+      SUPABASE_SERVICE_ROLE_KEY=...
+  npm run dev
+
+  Runs at:        http://localhost:3000
+  Health check:   http://localhost:3000/api/health
+
+  Note: as of Phase 1/2, the Angular app talks DIRECTLY to Supabase for
+  everything (auth, tables, storage). The backend is not required to run
+  the current app — it only becomes necessary starting Phase 3, for
+  privileged actions (user invitations, server-written notifications) that
+  must use the service-role key and therefore cannot happen in the browser.
+
+--------------------------------------------------------------------
+2) HOW TO START THE FRONTEND (project-x-app)
+--------------------------------------------------------------------
+  cd project-x-app
+  npm install                (first time only)
+  copy .env.example to .env and fill in:
+      SUPABASE_URL=...
+      SUPABASE_ANON_KEY=...
+  npm run start
+
+  Runs at:  http://localhost:4200
+
+  `npm run start` / `npm run build` automatically regenerate
+  src/environments/environment.ts and environment.development.ts from your
+  .env file (via scripts/set-env.mjs) — never edit those two files by hand,
+  your changes will be overwritten on the next start/build.
+
+--------------------------------------------------------------------
+3) LOGIN ACCOUNTS
+--------------------------------------------------------------------
+There is no public "sign up" page yet — accounts are created by an admin
+(invitations arrive in Phase 3) or, for local development, via seed data.
+
+IF you ran supabase/seed.sql against a DEV Supabase project, these test
+accounts exist (password is the same for all three):
+
+    Email                      Role            Password
+    -------------------------- --------------- ---------------
+    admin@demo.local           admin           Password123!
+    sectionhead@demo.local     section_head    Password123!
+    staff@demo.local           staff           Password123!
+
+  All three belong to "Demo Organization" and its "General" team.
+
+IF you did NOT run the seed script (e.g. a real/production Supabase
+project), you must bootstrap your own first admin manually — see step 4
+of NEXT_STEPS.txt (create a Supabase Auth user, then insert rows into
+public.organizations and public.organization_members).
+
+Forgot password: use the "Forgot password?" link on the login page. This
+requires Supabase Auth email sending to be configured (works out of the box
+with Supabase's default email service in most cases) and the redirect URL
+(http://localhost:4200/reset-password) to be allow-listed in Supabase
+Authentication > URL Configuration.
+
+--------------------------------------------------------------------
+4) USER ROLES & WHAT THEY CAN DO
+--------------------------------------------------------------------
+ADMIN
+  - Full control: manage users, teams, pipelines, stages, tags, settings.
+  - Sees Users, Tags, Settings in the sidebar (hidden from other roles).
+  - Can see/manage every task in the organization.
+
+SECTION HEAD
+  - Manages their own team/section: assign tasks to staff in their team,
+    move tasks between stages, comment/attach/link/tag.
+  - Cannot manage users, pipelines, tags, or org settings.
+
+STAFF
+  - Sees/updates only tasks assigned to them or created by them.
+  - Can comment, attach files, add links, and add tags where permitted.
+  - Cannot manage users, pipelines, tags, teams, or settings.
+
+Authorization is enforced in TWO places, but the database is the real
+boundary:
+  - Angular guards/sidebar (core/guards, core/services/permission.service.ts)
+    hide UI for a smoother UX — this is convenience only.
+  - Postgres Row Level Security (supabase/migrations/009_rls.sql) is what
+    actually blocks unauthorized reads/writes, even if someone bypasses the
+    Angular app entirely.
+
+--------------------------------------------------------------------
+5) WHAT'S BUILT SO FAR (Phase 1 + Phase 2)
+--------------------------------------------------------------------
+Working today:
+  - Login, logout, forgot/reset password, protected routes
+  - Responsive shell: sidebar (permission-aware) + header + user menu
+  - Basic profile page (view/edit your display name)
+  - Dashboard page (layout only — real stats arrive in Phase 9)
+  - Full Postgres schema + RLS for: organizations, profiles,
+    organization_members, teams, pipelines, pipeline_stages, tasks, tags,
+    task_tags, task_comments, task_links, task_attachments, task_activity,
+    notifications
+  - Supabase Storage bucket ("task-attachments") + policies
+
+NOT built yet (sidebar links show a "coming soon" placeholder):
+  - Tasks (list/board/calendar views)           -> Phase 5-8
+  - Pipelines & stage management UI              -> Phase 4
+  - Teams management UI                          -> Phase 3
+  - Users / invitations UI                        -> Phase 3
+  - Tags management UI                            -> Phase 3-5
+  - Notifications UI                              -> Phase 10
+  - Organization settings UI                      -> later phase
+  - Reports                                       -> Phase 11
+
+--------------------------------------------------------------------
+6) USEFUL PATHS IN THE APP
+--------------------------------------------------------------------
+  /login              Sign in
+  /forgot-password    Request a password reset email
+  /reset-password     Set a new password (opened from the email link)
+  /dashboard          Role-aware dashboard (default landing page)
+  /profile            View/edit your own profile
+  /tasks, /pipelines, /teams, /users, /tags, /notifications, /settings
+                      Placeholder pages (Users/Tags/Settings are admin-only)
+
+--------------------------------------------------------------------
+7) THINGS TO KEEP IN MIND
+--------------------------------------------------------------------
+  - Never commit project-x-app/.env or project-x-api/.env (both gitignored).
+  - Never put the Supabase SERVICE ROLE key in project-x-app — only
+    project-x-api may use it (project-x-api/src/config/supabaseAdmin.ts).
+  - If profile/role data looks empty after logging in, it usually means the
+    signed-in user has no row in organization_members yet — see NEXT_STEPS.txt
+    step 4 to link a user to an organization.
+  - Migrations must be run in numeric order (001 -> 010).
+  - See NEXT_STEPS.txt for anything that still needs your action (Supabase
+    project creation, running migrations, Vercel env vars, etc.).

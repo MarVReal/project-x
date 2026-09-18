@@ -1,0 +1,135 @@
+TASK MANAGEMENT SYSTEM — NEXT STEPS (things I cannot do for you)
+==================================================================
+Phase 1 (Angular foundation: layout, auth, routing, guards) and Phase 2
+(Postgres schema, RLS, storage policies, dev seed data) are implemented.
+Everything below requires YOUR credentials/accounts, so I could not do it.
+
+--------------------------------------------------------------------
+1) CREATE A SUPABASE PROJECT
+--------------------------------------------------------------------
+- Go to https://supabase.com/dashboard and create a new project.
+- Note down (Project Settings > API):
+    Project URL            -> SUPABASE_URL
+    anon / public API key  -> SUPABASE_ANON_KEY
+    service_role API key   -> SUPABASE_SERVICE_ROLE_KEY  (SECRET — server only, never in Angular)
+
+--------------------------------------------------------------------
+2) RUN THE DATABASE MIGRATIONS
+--------------------------------------------------------------------
+Files are in: supabase/migrations/001_initial_schema.sql ... 010_storage.sql
+
+Option A (no CLI needed):
+  - Open Supabase Dashboard > SQL Editor.
+  - Paste and run each file IN NUMERIC ORDER (001 first, 010 last).
+
+Option B (Supabase CLI):
+  - npm install -g supabase
+  - supabase link --project-ref <your-project-ref>
+  - supabase db push
+
+This creates: organizations, profiles, organization_members, teams, pipelines,
+pipeline_stages, tasks, tags, task_tags, task_comments, task_links,
+task_attachments, task_activity, notifications — plus RLS policies, helper
+functions (is_admin, is_section_head, can_access_task, etc.), and the
+"task-attachments" Storage bucket + policies.
+
+--------------------------------------------------------------------
+3) (OPTIONAL, LOCAL DEV ONLY) LOAD DEMO DATA
+--------------------------------------------------------------------
+File: supabase/seed.sql
+- Only run this against a local/dev Supabase instance (it creates 3 test auth
+  users with the password "Password123!"). Never run it against production.
+- Via Supabase CLI: `supabase db reset` runs migrations + seed.sql automatically.
+- Or paste supabase/seed.sql into the SQL Editor of a dev/test project.
+
+Demo accounts created:
+    admin@demo.local         (role: admin)
+    sectionhead@demo.local   (role: section_head)
+    staff@demo.local         (role: staff)
+  Password for all three: Password123!
+
+--------------------------------------------------------------------
+4) CREATE YOUR FIRST REAL ADMIN (PRODUCTION / NON-SEEDED PROJECT)
+--------------------------------------------------------------------
+There is no public "sign up" screen yet (invitations arrive in Phase 3), so
+bootstrap your first organization + admin manually:
+
+  a. Supabase Dashboard > Authentication > Users > "Add user" (create yourself
+     with an email + password, or use "invite").
+  b. Supabase Dashboard > SQL Editor, run (replace the placeholders):
+
+     insert into public.organizations (name, slug)
+     values ('Your Organization', 'your-organization')
+     returning id;                -- copy this id
+
+     insert into public.organization_members (organization_id, user_id, role, status, joined_at)
+     values ('<organization id from above>', '<your auth user id>', 'admin', 'active', now());
+
+  c. Log in at /login with that account — you're now the org admin.
+
+--------------------------------------------------------------------
+5) CONFIGURE SUPABASE AUTH URLS (password reset / email links)
+--------------------------------------------------------------------
+Supabase Dashboard > Authentication > URL Configuration:
+  - Site URL: your production URL (e.g. https://your-app.vercel.app)
+  - Redirect URLs, add both:
+      http://localhost:4200/reset-password
+      https://your-app.vercel.app/reset-password
+
+--------------------------------------------------------------------
+6) SET LOCAL ENVIRONMENT VARIABLES
+--------------------------------------------------------------------
+Frontend:
+  - Copy project-x-app/.env.example to project-x-app/.env and fill in:
+      SUPABASE_URL=...
+      SUPABASE_ANON_KEY=...
+  - `npm run start` / `npm run build` in project-x-app auto-generates
+    src/environments/environment*.ts from this file (scripts/set-env.mjs).
+
+Backend (only needed once Phase 3 privileged endpoints are built):
+  - Copy project-x-api/.env.example to project-x-api/.env and fill in:
+      SUPABASE_URL=...
+      SUPABASE_ANON_KEY=...
+      SUPABASE_SERVICE_ROLE_KEY=...   (keep this secret!)
+      CORS_ORIGIN=http://localhost:4200
+
+--------------------------------------------------------------------
+7) DEPLOY THE FRONTEND TO VERCEL
+--------------------------------------------------------------------
+- Create a new Vercel project pointing at the project-x-app folder
+  (Root Directory = project-x-app).
+- Vercel Project Settings > Environment Variables, add for Production
+  (and Preview if desired):
+      SUPABASE_URL
+      SUPABASE_ANON_KEY
+- Build command: npm run build   (already set via vercel.json)
+- Output directory: dist/project-x-app/browser (already set via vercel.json)
+- Never commit real keys — .env is gitignored; only .env.example is tracked.
+
+--------------------------------------------------------------------
+8) BACKEND HOSTING (project-x-api) — only needed for Phase 3+
+--------------------------------------------------------------------
+project-x-api is a plain Express server; Vercel needs extra adapter config to
+run Express as serverless functions. Until Phase 3 (admin invitations,
+server-sent notifications) needs it, you can leave it undeployed. When ready,
+host it on Render/Railway/Fly.io (simplest for a long-running Express app) or
+adapt it to Vercel serverless functions — let me know which you prefer.
+
+--------------------------------------------------------------------
+WHAT'S ALREADY DONE
+--------------------------------------------------------------------
+- Angular 21 app (project-x-app): Angular Material, standalone components,
+  lazy-loaded routes, permission-aware sidebar/header shell, Supabase Auth
+  (login, logout, forgot/reset password, protected routes, basic profile
+  editing), centralized PermissionService + role guards.
+- Postgres schema + RLS (supabase/migrations 001-010) implementing the
+  organizations -> teams -> pipelines -> stages -> tasks hierarchy, tags,
+  comments, links, attachments, activity log, and notifications, all scoped
+  by organization_id with reusable helper functions (is_admin,
+  is_section_head, can_access_task, etc.).
+- Dev seed data (supabase/seed.sql) with a demo org, 3 role accounts,
+  3 pipelines with stages, 5 tags, and a few sample tasks.
+
+Next development phase (once the above is done and verified): Phase 3 — User
+management (admin invitations, roles, teams UI) — say the word when you want
+me to continue.

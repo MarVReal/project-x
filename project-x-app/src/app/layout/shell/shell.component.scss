@@ -1,0 +1,14 @@
+.shell-container {
+  height: 100vh;
+}
+
+.shell-sidenav {
+  width: 260px;
+  border-right: 1px solid var(--mat-sys-outline-variant);
+}
+
+.shell-main {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}

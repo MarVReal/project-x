@@ -1,0 +1,30 @@
+.dashboard-role {
+  text-transform: capitalize;
+  color: var(--mat-sys-outline);
+  margin-top: -0.5rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.kpi-card {
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.kpi-label {
+  font-size: 0.875rem;
+  color: var(--mat-sys-outline);
+}
+
+.kpi-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+}

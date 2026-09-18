@@ -1,0 +1,13 @@
+<h1>Welcome back{{ displayName() ? ', ' + displayName() : '' }}</h1>
+<p class="dashboard-role">Role: {{ role() ?? 'unknown' }}</p>
+
+<div class="kpi-grid">
+  @for (card of kpiCards(); track card) {
+    <mat-card appearance="outlined" class="kpi-card">
+      <mat-card-content>
+        <span class="kpi-label">{{ card }}</span>
+        <span class="kpi-value">—</span>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
